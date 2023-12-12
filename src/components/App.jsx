@@ -1,14 +1,13 @@
 import { Component } from 'react';
 import SearchBar from './SearchBar/SearchBar';
 import ImageGallery from './ImageGallery/ImageGallery';
-import Modal from './Modal/Modal';
+
 import Loader from './Loader/Loader';
 import Button from './Button/Button';
 import axios from 'axios';
 
 const KEY = '40311007-381e26539f6c0a156243500cd';
 const perPage = 12;
-const page = 1;
 
 class App extends Component {
   // вихідне положення
@@ -17,23 +16,36 @@ class App extends Component {
     images: [], // картинки що прийшли
     currentPage: 1, // поточний номер сторінки
     // error: null, // повідомлення про помилку
-    // isLoading: false, // прапорець завантаження
-    // totalPages: 0, // загальна кількість сторінок
+    loading: false, // прапорець завантаження
+    totalPages: 0, // загальна кількість сторінок
   };
+
+  componentDidUpdate(_, prevState) {
+    if (
+      prevState.search !== this.state.search ||
+      prevState.currentPage !== this.state.currentPage
+    ) {
+      this.fetchData();
+    }
+  }
 
   fetchData = async () => {
     try {
-      const URL = `https://pixabay.com/api/?q=${this.state.search}&page=${page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=${perPage}`;
+      const URL = `https://pixabay.com/api/?q=${this.state.search}&page=${this.state.currentPage}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=${perPage}`;
 
-      console.log(this.state.search);
+      this.setState({ loading: true }); // вмикаємо лоудер
 
-      const response = await axios.get(URL);
+      const response = await axios.get(URL); // робимо запит
       const data = response.data;
-      const images = data.hits;
-      this.setState({ images });
+      const newImages = data.hits;
+
+      this.setState(prevState => ({
+        images: [...prevState.images, ...newImages],
+        totalPages: Math.ceil(data.totalHits / 12),
+        loading: false, // знімаємо лоудер
+      }));
     } catch (error) {
       console.error('Error fetching data:', error);
-      // this.setState({ error: 'Error fetching data', isLoading: false });
     }
   };
 
@@ -48,16 +60,23 @@ class App extends Component {
     );
   };
 
+  onLoadMoreButton = () => {
+    this.setState(prevState => ({
+      currentPage: prevState.currentPage + 1,
+    }));
+  };
+
   render() {
-    const { images } = this.state;
+    const { images, totalPages, currentPage, loading } = this.state;
 
     return (
       <>
         <SearchBar onSubmit={this.handleSubmit} />
         <ImageGallery images={images}></ImageGallery>
-        <Loader />
-        <Modal />
-        <Button />
+        {images.length > 0 && totalPages !== currentPage && (
+          <Button onLoadMoreButton={this.onLoadMoreButton} />
+        )}
+        {loading && <Loader />}
       </>
     );
   }

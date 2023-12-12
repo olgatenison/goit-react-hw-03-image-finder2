@@ -1,30 +1,57 @@
-import css from './ImageGalleryItem.module.css';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
+import css from './ImageGalleryItem.module.css';
+import Modal from '../Modal/Modal';
 
-const ImageGalleryItem = ({ id, smallImage, largeImage, tags }) => {
-  return (
-    <>
-      <li key={id} className={css.galleryItem}>
-        <img
-          src={smallImage}
-          alt={tags}
-          data-large={largeImage}
-          className={css.galleryImage}
-        />
-      </li>
-    </>
-  );
-};
+class ImageGalleryItem extends Component {
+  constructor(props) {
+    super(props);
 
-ImageGalleryItem.propTypes = {
-  images: PropTypes.arrayOf(
-    PropTypes.shape({
-      tags: PropTypes.string.isRequired,
-      id: PropTypes.number.isRequired,
-      webformatURL: PropTypes.string.isRequired,
-      largeImageURL: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-};
+    this.state = {
+      showModal: false,
+    };
+  }
+
+  // тоглить модалку
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
+
+  render() {
+    const { image } = this.props;
+    const { showModal } = this.state;
+
+    return (
+      <>
+        <li className={css.item}>
+          <img
+            className={css.image}
+            src={image.webformatURL}
+            alt={image.tags}
+            onClick={this.toggleModal}
+          />
+
+          {showModal && ( // Если showModal равно true, отображаем модальное окно
+            <Modal
+              largeImageURL={image.largeImageURL} // URL большого изображения
+              tags={image.tags} // Теги изображения
+              onClose={this.toggleModal} // Обработчик для закрытия модального окна
+            />
+          )}
+        </li>
+      </>
+    );
+  }
+}
 
 export default ImageGalleryItem;
+
+ImageGalleryItem.propTypes = {
+  image: PropTypes.shape({
+    webformatURL: PropTypes.string.isRequired,
+    tags: PropTypes.string.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
+  }).isRequired,
+};

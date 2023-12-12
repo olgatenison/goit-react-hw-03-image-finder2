@@ -1,29 +1,22 @@
-import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 import css from './ImageGallery.module.css';
 import PropTypes from 'prop-types';
+import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
+import { nanoid } from 'nanoid';
 
-const ImageGallery = ({ images, tags }) => {
+const ImageGallery = ({ images }) => {
   return (
     <>
       <ul className={css.gallery}>
         {images.map(image => (
-          <ImageGalleryItem
-            key={image.id}
-            smallImage={image.webformatURL}
-            largeImage={image.largeImageURL}
-            alt={tags}
-          />
+          <ImageGalleryItem key={nanoid()} image={image} />
         ))}
       </ul>
     </>
   );
 };
 
-ImageGalleryItem.propTypes = {
-  tags: PropTypes.string.isRequired,
-  smallImage: PropTypes.string.isRequired,
-  largeImage: PropTypes.string.isRequired,
-  openModal: PropTypes.func.isRequired,
+ImageGallery.propTypes = {
+  images: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 export default ImageGallery;
