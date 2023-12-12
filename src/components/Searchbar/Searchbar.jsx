@@ -33,7 +33,7 @@ class SearchBar extends Component {
             autoComplete="off"
             autoFocus
             name="searchName"
-            placeholder="Искать изображения и фотографии"
+            placeholder="What photo do you want to find?"
             value={this.state.inputValue}
             onChange={this.handleChange}
           />
