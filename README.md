@@ -1,3 +1,7 @@
+   <p align="center">
+     <img src="assets/prew.jpg" width="700" alt="Project Preview">
+   </p>
+
 # Image Finder App
 
 Image Finder App is a web application that allows users to search for images by
@@ -25,3 +29,7 @@ This application features the following functionality and components:
    ```bash
    npm install
    ```
+
+   <p align="center">
+     <img src="assets/prew.jpg" width="600" alt="Project Preview">
+   </p>

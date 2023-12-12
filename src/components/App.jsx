@@ -62,16 +62,11 @@ class App extends Component {
   };
 
   handleSubmit = searchQuery => {
-    this.setState(
-      {
-        search: searchQuery,
-        images: [],
-        currentPage: 1,
-      },
-      () => {
-        this.fetchData();
-      }
-    );
+    this.setState({
+      search: searchQuery,
+      images: [],
+      currentPage: 1,
+    });
   };
 
   onLoadMoreButton = () => {
