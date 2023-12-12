@@ -1,21 +1,17 @@
 import css from './ImageGalleryItem.module.css';
 import PropTypes from 'prop-types';
 
-const ImageGalleryItem = ({ images }) => {
-  console.log(images);
-
+const ImageGalleryItem = ({ id, smallImage, largeImage, tags }) => {
   return (
     <>
-      {images.map(img => (
-        <li key={img.id} className={css.galleryItem}>
-          <img
-            src={img.webformatURL}
-            alt={img.id}
-            data-large={img.largeImageURL}
-            className={css.galleryImage}
-          />
-        </li>
-      ))}
+      <li key={id} className={css.galleryItem}>
+        <img
+          src={smallImage}
+          alt={tags}
+          data-large={largeImage}
+          className={css.galleryImage}
+        />
+      </li>
     </>
   );
 };
@@ -23,6 +19,7 @@ const ImageGalleryItem = ({ images }) => {
 ImageGalleryItem.propTypes = {
   images: PropTypes.arrayOf(
     PropTypes.shape({
+      tags: PropTypes.string.isRequired,
       id: PropTypes.number.isRequired,
       webformatURL: PropTypes.string.isRequired,
       largeImageURL: PropTypes.string.isRequired,

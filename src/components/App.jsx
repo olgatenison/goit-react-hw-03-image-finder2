@@ -3,7 +3,6 @@ import SearchBar from './SearchBar/SearchBar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Modal from './Modal/Modal';
 import Loader from './Loader/Loader';
-import ImageGalleryItem from './ImageGalleryItem/ImageGalleryItem';
 import Button from './Button/Button';
 import axios from 'axios';
 
@@ -34,7 +33,7 @@ class App extends Component {
       this.setState({ images });
     } catch (error) {
       console.error('Error fetching data:', error);
-      this.setState({ error: 'Error fetching data', isLoading: false });
+      // this.setState({ error: 'Error fetching data', isLoading: false });
     }
   };
 
@@ -55,9 +54,7 @@ class App extends Component {
     return (
       <>
         <SearchBar onSubmit={this.handleSubmit} />
-        <ImageGallery>
-          <ImageGalleryItem images={images} />
-        </ImageGallery>
+        <ImageGallery images={images}></ImageGallery>
         <Loader />
         <Modal />
         <Button />
