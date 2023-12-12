@@ -22,7 +22,7 @@ class App extends Component {
     totalPages: 0, // загальна кількість сторінок
   };
 
-  componentDidUpdate(_, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if (
       prevState.search !== this.state.search ||
       prevState.currentPage !== this.state.currentPage
@@ -68,7 +68,9 @@ class App extends Component {
         images: [],
         currentPage: 1,
       },
-      this.fetchData
+      () => {
+        this.fetchData();
+      }
     );
   };
 
